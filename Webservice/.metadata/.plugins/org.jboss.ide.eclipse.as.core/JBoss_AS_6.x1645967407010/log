@@ -1,0 +1,48 @@
+!SESSION 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2022-02-27 15:10:38.890
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2022-02-27 15:13:51.993
+!MESSAGE Server Startup Succeeded
+!SESSION 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2022-02-27 16:25:28.598
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 4 16842784 2022-02-27 16:32:56.646
+!MESSAGE 
+
+!ENTRY org.jboss.ide.eclipse.as.core 4 16973826 2022-02-27 16:33:02.695
+!MESSAGE The server was shutdown forcefully. All processes were terminated.
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2022-02-27 16:34:49.503
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2022-02-27 16:38:49.697
+!MESSAGE Server Startup Succeeded
+
+!ENTRY org.jboss.ide.eclipse.as.wtp.core 1 16973825 2022-02-27 16:53:01.927
+!MESSAGE Server processes have terminated prematurely. Please check your server logs for more details. 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2022-02-27 16:53:04.126
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2022-02-27 16:56:14.810
+!MESSAGE Server Startup Succeeded
+!SESSION 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2022-02-27 17:13:32.680
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2022-02-27 17:17:59.605
+!MESSAGE Server Startup Succeeded
+
+!ENTRY org.jboss.ide.eclipse.as.wtp.core 1 16973825 2022-02-27 17:30:59.762
+!MESSAGE Server processes have terminated prematurely. Please check your server logs for more details. 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2022-02-27 17:31:02.074
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2022-02-27 17:33:11.911
+!MESSAGE Server Startup Succeeded

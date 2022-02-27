@@ -1,0 +1,126 @@
+package com.service;
+
+import java.util.List;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.service.Clients;
+import com.service.qualifier.Resource;
+
+@Path("api")
+public class ClientsUrl
+{
+	@Inject
+	private EntityManager em;
+	
+	
+    @GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("status")
+	public Response getStatus() {
+		return Response.ok(
+				"{\"status\":\"Service Book Service is running...\"}").build();
+	}
+    
+    @GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("clients")
+	public Response getClients() {
+		String response = null;
+		try {
+
+			em = Resource.getEntityManager();
+			Query query = em.createQuery("SELECT ACL, S_ROWID, ACCUNTNUMBER, ACCOUNTNAME, FIRSTNAME, LASTNAME, BRANCHCODE FROM Clients");
+			List<Clients> list = query.getResultList();
+			em.close();
+			response = toJSONString(list);
+		} catch (Exception err) {
+			response = "{\"status\":\"401\","
+					+ "\"message\":\"No content found \""
+					+ "\"developerMessage\":\"" + err.getMessage() + "\"" + "}";
+			return Response.status(401).entity(response).build();
+		}
+		return Response.ok(response).build();
+	}
+
+
+    @GET
+    @Path("/client/{ID}")
+    public Response getByID(@PathParam("ID") String id) {
+    	String responseID = null;
+  		try {
+
+  			em = Resource.getEntityManager();
+  			Query query = em.createQuery("SELECT ACCUNTNUMBER, ACCOUNTNAME, FIRSTNAME, LASTNAME, BRANCHCODE FROM Clients WHERE ACCUNTNUMBER ='"+id+"'");
+  			List<Clients> list = query.getResultList();
+  			em.close();
+  			responseID = toJSONString(list);
+  		} catch (Exception err) {
+  			responseID = "{\"status\":\"401\","
+  					+ "\"message\":\"No content found \""
+  					+ "\"developerMessage\":\"" + err.getMessage() + "\"" + "}";
+  			return Response.status(401).entity(responseID).build();
+  		}
+  		return Response.ok(responseID).build();
+    }
+    
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/client/create")
+	public Response createBook(String payload) {
+
+		// System.out.println("payload - " + payload);
+
+		// Create a new Gson object that could parse all passed in elements
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.setDateFormat("yyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		Gson gson = gsonBuilder.create();
+
+		// Get book Object parsed from JSON string
+		Clients Client = gson.fromJson(payload, Clients.class);
+		String returnCode = "200";
+		// System.out.println(Client);
+		em = Resource.getEntityManager();
+		
+		// Insert Book using JTA persistance with Hibernate
+		try {
+			em.getTransaction().begin();
+			em.persist(Client);
+			em.flush();
+			em.refresh(Client);
+			em.getTransaction().commit();
+			em.close();
+			
+			returnCode = "{"
+					+ "\"href\":\"http://localhost:76/localhost:76/CaseWebService/rest/tutorial/client/"+Client.getACCUNTNUMBER()+"\","
+					+ "\"message\":\"New Client created successfully.\""
+					+ "}";
+		} catch (Exception err) {
+			err.printStackTrace();
+			returnCode = "{\"status\":\"500\","+
+					"\"message\":\"Resource not created.\""+
+					"\"developerMessage\":\""+err.getMessage()+"\""+
+					"}";
+			return  Response.status(404).entity(returnCode).build(); 
+
+		}
+		return  Response.status(201).entity(returnCode).build(); 
+
+	}
+    
+    
+    public String toJSONString(Object object) {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.setDateFormat("yyy-MM-dd'T'HH:mm:ss.SSS'Z'"); // ISO8601 /
+																	// UTC
+		Gson gson = gsonBuilder.create();
+		return gson.toJson(object);
+	}
+    
+}
